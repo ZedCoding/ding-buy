@@ -5,9 +5,9 @@
 
 ### 预览
 <div style="width:100%;display:flex;justify-content:space-around;">
-  <img src="./preview/home.png" width="33%" alt="">
-  <img src="./preview/cart.png" width="33%" alt="">
-  <img src="./preview/mine.png" width="33%" alt="">
+  <img src="./preview/home.png" width="30%" alt="">
+  <img src="./preview/cart.png" width="30%" alt="">
+  <img src="./preview/mine.png" width="30%" alt="">
 </div>
 
 ### 安装依赖（推荐yarn）
