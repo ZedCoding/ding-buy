@@ -1,24 +1,21 @@
-# ding-buy
+## 移动端叮咚买菜 vue + vant
 
-## Project setup
+### 免责说明
+本项目仅限技术交流，不建议商业使用，产生的一切侵权著作法律后果,与本作者无关。
+
+### 安装依赖（推荐yarn）
 ```
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+### 本地运行
 ```
 yarn serve
 ```
 
-### Compiles and minifies for production
+### 本地打包
 ```
 yarn build
 ```
 
-### Lints and fixes files
-```
-yarn lint
-```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
