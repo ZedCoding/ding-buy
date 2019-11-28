@@ -260,7 +260,7 @@ export default {
     },
     addCart({ id, name, small_image, price }) {
       this.ADD_GOODS({ id, name, small_image, price });
-      this.$toast("添加成功");
+      this.$toast("成功加入购物车");
     },
   },
   components: {

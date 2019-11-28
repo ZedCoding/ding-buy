@@ -1,7 +1,16 @@
 <template>
   <div class="layout">
-    <router-view style="padding-bottom:50px;" />
-    <van-tabbar v-model="active" active-color="#3bba63" inactive-color="#7d7e80" route>
+    <keep-alive>
+      <router-view style="padding-bottom:50px;" v-if="$route.meta.keepAlive" />
+    </keep-alive>
+    <router-view style="padding-bottom:50px;" v-if="!$route.meta.keepAlive" />
+    <van-tabbar
+      v-model="active"
+      active-color="#3bba63"
+      inactive-color="#7d7e80"
+      route
+      safe-area-inset-bottom
+    >
       <template v-for="bar in barList">
         <van-tabbar-item
           :key="bar.name"
@@ -40,7 +49,7 @@ export default {
         },
         {
           name: "购物车",
-          icon: "cart-o",
+          icon: "shopping-cart-o",
           route: "/cart"
         },
         {

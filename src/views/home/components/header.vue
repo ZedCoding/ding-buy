@@ -4,13 +4,13 @@
       <div class="search-top">
         <div class="address" @click="onAddressClick">
           <van-icon name="location-o" color="#fff" size="1.2rem" />
-          <span class="text">{{computedAddress}}</span>
+          <span class="text">{{myAddress}}</span>
           <van-icon name="arrow-down" color="#fff" size="0.8rem" />
         </div>
       </div>
       <van-search
         v-model="value"
-        placeholder="请输入搜索关键词"
+        placeholder="搜索一下"
         shape="round"
         @search="onSearch"
         background="#3bba63"
@@ -57,19 +57,25 @@ export default {
     };
   },
   computed: {
-    computedAddress() {
-      if (!this.addressInfo.length) {
-        return "请选择地址";
+    myAddress() {
+      if (Object.keys(this.$route.params).length) {
+        return this.$route.params.name;
       }
-      let result = this.addressInfo.filter(
-        address => address.isDefault === true
-      )[0];
-      return result.county;
+      if (!this.addressInfo.length) {
+        return "请选择位置";
+      }
+      let temp = this.addressInfo.filter(address => address.isDefault === true);
+      if (temp.length) {
+        return temp[0].addressDetail || temp[0].county;
+      } else {
+        let _temp = this.addressInfo[0];
+        return _temp[0].addressDetail || _temp[0].county;
+      }
     }
   },
   methods: {
     onAddressClick() {
-      this.$router.push({ path: "/mine/myaddress" });
+      this.$router.push({ path: "/dashboard/home/map" });
     },
     onSearch() {
       this.$toast("暂未实现");
@@ -98,14 +104,22 @@ $bg: "~@/assets/img/home_bg.png";
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 16px 8px;
+      padding: 0.6rem;
       .address {
         display: flex;
         align-items: center;
+        padding: 0.3rem 0.5rem;
+        border-radius: 0.6rem;
+        background-color: rgba(0, 0, 0, 0.4);
+        max-width: 8rem;
+        box-sizing: border-box;
         .text {
           margin: 0 2px;
           font-size: 0.9375rem;
           color: #fff;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
       }
     }

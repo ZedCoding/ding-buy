@@ -1,7 +1,6 @@
 import axios from 'axios'
 import router from './router'
-
-import { Toast } from 'vant';
+import { Notify } from 'vant';
 
 const http = axios.create({
   baseURL: 'https://mock.cangdu.org/mock/5d940466d360e8289c6a8eb7',
@@ -9,7 +8,8 @@ const http = axios.create({
 })
 
 http.interceptors.request.use(config => {
-  return config
+  config.url += '?t=' + new Date().getTime(); // 加时间戳防止请求缓存
+  return { ...config }
 }, error => {
   return Promise.reject(error)
 })
@@ -36,7 +36,7 @@ http.interceptors.response.use(response => {
   } else {
     error.message = "连击服务器失败"
   }
-  Toast(rror.message);
+  Notify({ type: 'danger', message: error.message, duration: 800 });
   return new Promise(() => { }) // pending的promise，中止promise链
 })
 

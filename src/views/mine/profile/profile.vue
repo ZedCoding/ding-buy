@@ -63,7 +63,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["CHANGE_SEX","CHANGE_BIRTHDAY","LOG_OUT"]),
+    ...mapMutations(["CHANGE_SEX", "CHANGE_BIRTHDAY", "LOG_OUT"]),
     onSexClick() {
       this.show = true;
     },
@@ -85,7 +85,7 @@ export default {
     },
     handleConfirm(value) {
       this.dateShow = false;
-      let birthDay = value.format("yyyy-MM-dd");
+      let birthDay = this.format(value, "yyyy-MM-dd");
       this.CHANGE_BIRTHDAY(birthDay);
     },
     handleCancel() {
@@ -97,7 +97,7 @@ export default {
     dialogConfirm() {
       this.dialogShow = false;
       this.LOG_OUT();
-      this.$toast('退出成功');
+      this.$toast("退出成功");
       this.$router.back();
     }
   }

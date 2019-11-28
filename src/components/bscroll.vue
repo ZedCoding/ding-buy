@@ -81,9 +81,7 @@ export default {
   },
   methods: {
     _initScroll() {
-      if (!this.$refs.wrapper) {
-        return;
-      }
+      if (!this.$refs.wrapper) return;
       // better-scroll的初始化
       this.scroll = new BScroll(this.$refs.wrapper, {
         probeType: this.probeType,

@@ -3,13 +3,14 @@ import App from './App';
 import router from './router';
 import store from './store'
 import "reset-css";
-import './plugins/rem';
+import waterfall from "vue-waterfall2";
+import { rem, format, $toast } from './plugins';
+import FastClick from 'fastclick';
 import {
   Tabbar,
   TabbarItem,
   Icon,
   Button,
-  Toast,
   Swipe,
   SwipeItem,
   Search,
@@ -37,7 +38,7 @@ import {
   Radio,
   Checkbox,
   Stepper,
-  SubmitBar 
+  SubmitBar
 } from 'vant';
 
 Vue.use(Tabbar)
@@ -72,51 +73,30 @@ Vue.use(Tabbar)
   .use(Checkbox)
   .use(Stepper)
   .use(SubmitBar)
+  .use(waterfall)
+  .use(format)
+  .use(rem)
+  .use($toast)
 
 import http from './http'
 Vue.prototype.$http = http;
+
 import loading from '@/components/loading';
 import scrollTop from '@/components/scrollTop';
 Vue.component('loading', loading);
 Vue.component('scrollTop', scrollTop);
-Vue.prototype.$toast = Toast;
-import FastClick from 'fastclick';
+
 // 解决移动端点击延迟200ms的问题
 if ('addEventListener' in document) {
   document.addEventListener('DOMContentLoaded', function () {
     FastClick.attach(document.body);
   }, false);
 }
+
 Vue.prototype.onClickLeft = () => {
   router.back();
 }
-Date.prototype.format = function (format) {
-  var args = {
-    "M+": this.getMonth() + 1,
-    "d+": this.getDate(),
-    "h+": this.getHours(),
-    "m+": this.getMinutes(),
-    "s+": this.getSeconds(),
-    "q+": Math.floor((this.getMonth() + 3) / 3), //quarter
 
-    S: this.getMilliseconds()
-  };
-  if (/(y+)/.test(format))
-    format = format.replace(
-      RegExp.$1,
-      (this.getFullYear() + "").substr(4 - RegExp.$1.length)
-    );
-  for (var i in args) {
-    var n = args[i];
-
-    if (new RegExp("(" + i + ")").test(format))
-      format = format.replace(
-        RegExp.$1,
-        RegExp.$1.length == 1 ? n : ("00" + n).substr(("" + n).length)
-      );
-  }
-  return format;
-}
 Vue.config.productionTip = false
 
 new Vue({

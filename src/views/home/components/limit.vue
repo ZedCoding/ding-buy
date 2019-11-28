@@ -13,9 +13,9 @@
       </div>
       <span class="more">更多</span>
     </div>
-    <b-scroll class="limit-wrapper" :data="flashFoods" :probeType="2" :scrollX="true">
-      <ul class="limit-content" ref="urlWrap">
-        <li v-for="item in flashFoods" :key="item.id" class="content-item">
+    <div class="wrapper" ref="wrapper">
+      <ul ref="content">
+        <li v-for="item in flashFoods" :key="item.id" class="content-item" ref="item">
           <img :src="item.small_image" alt />
           <span class="title">{{item.name}}</span>
           <div class="price">
@@ -23,7 +23,7 @@
               <p class="now-price">￥{{item.price}}</p>
               <p class="origin-price">￥{{item.origin_price}}</p>
             </div>
-            <div class="buy-cart">
+            <div class="buy-cart" @click="addCart(item)">
               <svg data-v-da2028b6 viewBox="0 0 52 52" class="icon icon-60">
                 <defs data-v-da2028b6>
                   <radialGradient
@@ -71,11 +71,12 @@
           </div>
         </li>
       </ul>
-    </b-scroll>
+    </div>
   </div>
 </template>
 <script>
-import BScroll from "@/components/bscroll";
+import BScroll from "better-scroll";
+import { mapMutations } from "vuex";
 export default {
   name: "limit",
   props: {
@@ -86,16 +87,33 @@ export default {
   },
   data() {
     return {
-      time: 24 * 60 * 60 * 1000 * 7,
+      time: 24 * 60 * 60 * 1000 * 7
     };
+  },
+  methods: {
+    ...mapMutations(["ADD_GOODS"]),
+    addCart({ id, name, small_image, price }) {
+      this.ADD_GOODS({ id, name, small_image, price });
+      this.$toast("成功加入购物车");
+    }
   },
   mounted() {
     this.$nextTick(() => {
-      this.$refs.urlWrap.style.width = 1300 + 'px';
-    })
-  },
-  components: {
-    BScroll
+      if (!this.scroll) {
+        let contentWidth = 0;
+        let el = this.$refs.item;
+        for (let i = 0; i < el.length; i++) {
+          contentWidth += el[i].clientWidth * 1.15;
+        }
+        this.$refs.content.style.width = contentWidth + "px";
+        this.scroll = new BScroll(this.$refs.wrapper, {
+          probeType: 3,
+          startX: 0,
+          click: true,
+          scrollX: true
+        });
+      }
+    });
   }
 };
 </script>
@@ -136,44 +154,42 @@ export default {
       color: #3cb963;
     }
   }
-  .limit-wrapper {
+  .wrapper {
     width: 100%;
     overflow: hidden;
-    .limit-content {
-      display: flex;
-      align-items: center;
-      flex-wrap: nowrap;
-      .content-item {
-        flex: 0 0 6rem;
-        .title {
-          font-size: 0.625rem;
-          padding: 0.2rem;
-          line-height: 1.15rem;
-          word-break: break-all;
-          display: -webkit-box;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
+    white-space: nowrap;
+    .content-item {
+      display: inline-block;
+      width: 6.6rem;
+      margin-right: 1rem;
+      font-size: 0.8rem;
+      .title {
+        display: block;
+        height: 1.8rem;
+        line-height: 1.2;
+        padding: 0.2rem;
+        white-space: normal;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .price {
+        margin-top: 0.5rem;
+        padding: 0 0.2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .now-price {
+          font-size: 0.9375rem;
+          color: #f37078;
         }
-        .price {
-          padding: 0 0.15rem;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          .now-price {
-            font-size: 0.928rem;
-            color: #f37078;
-          }
-          .origin-price {
-            font-size: 0.6875rem;
-            color: #999;
-            text-decoration: line-through;
-          }
-          .buy-cart {
-            width: 1.5rem;
-            height: 1.5rem;
-          }
+        .origin-price {
+          font-size: 0.6875rem;
+          color: #999;
+          text-decoration: line-through;
+        }
+        .buy-cart {
+          width: 1.5rem;
+          height: 1.5rem;
         }
       }
     }

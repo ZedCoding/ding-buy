@@ -48,6 +48,9 @@ const router = new Router({
           path: 'home',
           name: "Home",
           component: Home,
+          meta: {
+            keepAlive: true
+          }
         },
         {
           path: "category",
@@ -57,7 +60,10 @@ const router = new Router({
         {
           path: "eat",
           name: "Eat",
-          component: Eat
+          component: Eat,
+          meta: {
+            keepAlive: true
+          }
         },
         {
           path: 'cart',
@@ -70,6 +76,11 @@ const router = new Router({
           component: Mine,
         }
       ]
+    },
+    {
+      path: "/dashboard/home/map",
+      name: "MyMap",
+      component: () => import('@/views/home/myMap')
     },
     {
       path: "/mine/profile",
@@ -104,7 +115,10 @@ const router = new Router({
     {
       path: "/mine/myVip",
       name: "Vip",
-      component: Vip
+      component: Vip,
+      meta: {
+        keepAlive: true
+      }
     },
     {
       path: "/mine/myVip/pay",
