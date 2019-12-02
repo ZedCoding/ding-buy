@@ -1,7 +1,7 @@
 <template>
   <div class="eat">
     <div class="search-wrap">
-      <van-search placeholder="搜索菜谱、食材" v-model="value" background="#f0f0f0" />
+      <van-search placeholder="搜索菜谱、食材" v-model="value" background="#f0f0f0" @search="onSearch" />
       <div class="collection" @click="onCollection">
         <svg
           data-v-fe6f31e2
@@ -26,6 +26,7 @@
             p-id="8467"
           />
         </svg>
+        <span class="text">收藏</span>
       </div>
       <div class="today-menu">今日菜单</div>
     </div>
@@ -116,8 +117,12 @@ export default {
     }
   },
   methods: {
+    onSearch() {
+      this.$toast("搜索功能未实现");
+      this.value = "";
+    },
     onCollection() {
-      this.$toast("收藏页面未实现");
+      this.$router.push({ path: "/collection" });
     },
     async getMenu() {
       let res = await this.$http("/api/recipe/allScene");
@@ -170,11 +175,11 @@ export default {
       };
       let flag = true;
       this.historyList.forEach(item => {
-        if(item.id === id) {
+        if (item.id === id) {
           flag = false;
         }
-      })
-      if(!flag) return;
+      });
+      if (!flag) return;
       this.historyList.unshift(obj);
     },
     async getList() {
@@ -213,8 +218,15 @@ export default {
     }
     .collection {
       position: absolute;
-      top: 20px;
-      right: 12px;
+      top: 12px;
+      right: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .text {
+        font-size: 0.8rem;
+        color: #3bba63;
+      }
     }
     .today-menu {
       margin: 12px 0 12px 12px;

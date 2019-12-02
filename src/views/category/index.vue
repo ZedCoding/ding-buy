@@ -1,5 +1,5 @@
 <template>
-  <div class="category">分类</div>
+  <div class="category">Waiting for implementation</div>
 </template>
 <script>
 export default {

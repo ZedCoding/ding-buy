@@ -181,8 +181,7 @@ export default {
       value === 0 && this.REMOVE_GOODS(id);
     },
     onSubmit() {
-      this.$toast("结算成功啦");
-      this.CLEAR_CART();
+      this.$router.push({ path: "/orderfill" });
     }
   }
 };

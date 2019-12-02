@@ -38,7 +38,12 @@ import {
   Radio,
   Checkbox,
   Stepper,
-  SubmitBar
+  SubmitBar,
+  ContactCard,
+  ContactList,
+  ContactEdit,
+  Popup,
+  Switch 
 } from 'vant';
 
 Vue.use(Tabbar)
@@ -73,6 +78,11 @@ Vue.use(Tabbar)
   .use(Checkbox)
   .use(Stepper)
   .use(SubmitBar)
+  .use(ContactCard)
+  .use(ContactList)
+  .use(ContactEdit)
+  .use(Popup)
+  .use(Switch)
   .use(waterfall)
   .use(format)
   .use(rem)

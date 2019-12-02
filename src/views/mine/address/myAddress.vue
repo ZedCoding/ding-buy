@@ -2,7 +2,13 @@
   <div class="my-address">
     <van-nav-bar title="我的地址" left-arrow @click-left="onClickLeft" fixed />
     <template v-if="addressInfo.length">
-      <van-address-list v-model="chosenAddressId" :list="computedList" @add="onAdd" @edit="onEdit" />
+      <van-address-list
+        v-model="chosenAddressId"
+        :list="computedList"
+        add-button-text="+ 添加新地址"
+        @add="onAdd"
+        @edit="onEdit"
+      />
     </template>
     <template v-else>
       <img :src="require('@/assets/img/empty_address.png')" class="empty-img" alt />
@@ -13,33 +19,45 @@
 </template>
 <script>
 import { mapState } from "vuex";
+import Vue from "vue";
 export default {
   name: "myAddress",
   data() {
     return {
-      chosenAddressId: 1
-    };
+      chosenAddressId: null
+    }
   },
   computed: {
     ...mapState(["addressInfo"]),
     computedList() {
-      return this.addressInfo.map((item, index) => {
+      return this.addressInfo.map(item => {
         let obj = {
-          id: index + 1,
+          id: item.id,
           name: item.name,
           tel: item.tel,
           address: `${item.province} ${item.city} ${item.county}`
         };
         return obj;
       });
-    }
+    },
   },
   methods: {
     onAdd() {
       this.$router.push({ path: "/mine/addaddress" });
     },
     onEdit(item, index) {
-      console.log(item, index);
+      this.$router.push({
+        name: "EditAddress",
+        params: { index }
+      });
+    }
+  },
+  watch: {
+    chosenAddressId: {
+      handler(val) {
+        console.log(val, );
+        this.$router.back()
+      }
     }
   }
 };
@@ -56,6 +74,10 @@ export default {
   .van-address-list {
     margin-top: 46px;
     width: 100%;
+    .van-address-list__add {
+      background-color: #3bba63;
+      border: 0;
+    }
   }
   .empty-img {
     width: 40%;

@@ -4,6 +4,8 @@ import {
   CHANGE_SEX,
   CHANGE_BIRTHDAY,
   ADD_ADDRESS,
+  EDIT_ADDRESS,
+  REMOVE_ADDRESS,
   ADD_GOODS,
   REMOVE_GOODS,
   CLEAR_CART,
@@ -31,6 +33,29 @@ export default {
   },
   [ADD_ADDRESS](state, address) {
     state.addressInfo.push(address);
+    setLocalStore('addressInfo', state.addressInfo);
+  },
+  [EDIT_ADDRESS](state, address) {
+    let addressInfo = state.addressInfo;
+    addressInfo = addressInfo.map(item => {
+      if (item.id === address.id) {
+        item = address;
+      }
+      return item;
+    })
+    state.addressInfo = [...addressInfo];
+    setLocalStore('addressInfo', state.addressInfo);
+  },
+  [REMOVE_ADDRESS](state, id) {
+    let addressInfo = state.addressInfo
+    let currentIndex;
+    addressInfo.forEach((item, index) => {
+      if (item.id === id) {
+        currentIndex = index;
+      }
+    })
+    addressInfo.splice(currentIndex, 1);
+    state.addressInfo = [...addressInfo];
     setLocalStore('addressInfo', state.addressInfo);
   },
   [ADD_GOODS](state, { id, name, small_image, price }) {

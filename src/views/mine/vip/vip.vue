@@ -195,7 +195,7 @@ export default {
         document.documentElement.scrollTop ||
         window.pageYOffset ||
         document.body.scrollTop;
-      let validTop = this.$refs.scrollFloor.getBoundingClientRect().top;
+      let validTop = this.$refs.scrollFloor && this.$refs.scrollFloor.getBoundingClientRect().top;
       this.showButton = scrollTop > validTop ? true : false;
     }
   },

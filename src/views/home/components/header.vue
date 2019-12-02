@@ -64,12 +64,11 @@ export default {
       if (!this.addressInfo.length) {
         return "请选择位置";
       }
-      let temp = this.addressInfo.filter(address => address.isDefault === true);
-      if (temp.length) {
-        return temp[0].addressDetail || temp[0].county;
+      let defaultArr = this.addressInfo.filter(address => address.isDefault === true);
+      if (defaultArr.length) {
+        return defaultArr[0].county;
       } else {
-        let _temp = this.addressInfo[0];
-        return _temp[0].addressDetail || _temp[0].county;
+        return this.addressInfo[0].county;
       }
     }
   },

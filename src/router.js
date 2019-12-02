@@ -2,25 +2,11 @@ import Vue from 'vue'
 import Router from 'vue-router'
 Vue.use(Router)
 
-// 首页
 const Home = () => import('@/views/home');
-const Category = () => import('@/views/category')
+const Category = () => import('@/views/category');
 const Eat = () => import('@/views/eat');
 const Cart = () => import('@/views/cart');
-const Mine = () => import('@/views/mine')
-
-// mine
-const Profile = () => import('@/views/mine/profile/profile')
-const ChangeName = () => import('@/views/mine/profile/changeName')
-
-const Order = () => import('@/views/mine/order')
-const Coupon = () => import('@/views/mine/coupon')
-const Vip = () => import('@/views/mine/vip/vip')
-const PayVip = () => import('@/views/mine/vip/payVip')
-
-const myAddress = () => import('@/views/mine/address/myAddress')
-const AddAddress = () => import('@/views/mine/address/addAddress')
-const EditAddress = () => import('@/views/mine/address/editAddress')
+const Mine = () => import('@/views/mine');
 
 // 解决vue-router导航重复
 const originalPush = Router.prototype.push;
@@ -85,37 +71,42 @@ const router = new Router({
     {
       path: "/mine/profile",
       name: "Profile",
-      component: Profile
+      component: () => import('@/views/mine/profile/profile')
     },
     {
       path: "/profile/changeName",
       name: "ChangeName",
-      component: ChangeName
+      component: () => import('@/views/mine/profile/changeName')
     },
     {
       path: "/mine/order",
       name: "Order",
-      component: Order
+      component: () => import('@/views/mine/order')
     },
     {
       path: "/mine/coupons",
       name: "Coupon",
-      component: Coupon
+      component: () => import('@/views/mine/coupon')
     },
     {
       path: "/mine/myaddress",
       name: "Address",
-      component: myAddress
+      component: () => import('@/views/mine/address/myAddress')
     },
     {
       path: "/mine/addaddress",
       name: "AddAddress",
-      component: AddAddress
+      component: () => import('@/views/mine/address/addAddress')
+    },
+    {
+      path: "/mine/editaddress",
+      name: "EditAddress",
+      component: () => import('@/views/mine/address/editAddress')
     },
     {
       path: "/mine/myVip",
       name: "Vip",
-      component: Vip,
+      component: () => import('@/views/mine/vip/vip'),
       meta: {
         keepAlive: true
       }
@@ -123,8 +114,24 @@ const router = new Router({
     {
       path: "/mine/myVip/pay",
       name: "PayVip",
-      component: PayVip
+      component: () => import('@/views/mine/vip/payVip')
+    },
+    {
+      path: "/orderfill",
+      name: "OrderFill",
+      component: () => import('@/views/cart/order/orderFill')
+    },
+    {
+      path: "/goodslist",
+      name: "GoodsList",
+      component: () => import('@/views/cart/order/goodsList')
+    },
+    {
+      path: "/collection",
+      name: "Collection",
+      component: () => import('@/views/eat/collection/collection')
     }
+    
   ]
 })
 

@@ -1,14 +1,64 @@
 <template>
-  <div class='edit-address'></div>
+  <div class="edit-address">
+    <van-nav-bar
+      title="编辑地址"
+      left-arrow
+      right-text="删除"
+      @click-left="onClickLeft"
+      @click-right="onClickRight"
+    />
+    <van-address-edit
+      :area-list="areaList"
+      show-postal
+      show-set-default
+      save-button-text="保存"
+      show-search-result
+      :address-info="defaultInfo"
+      @save="onSave"
+    />
+    <van-dialog v-model="dialogShow" message="确定要删除吗？" showCancelButton @confirm="onConfirm" />
+  </div>
 </template>
 <script>
+import areaList from "@/assets/js/area";
+import { mapMutations, mapState } from "vuex";
 export default {
   name: "edit-address",
   data() {
-    return {};
+    return {
+      areaList,
+      dialogShow: false
+    };
   },
-  created() {},
-  methods: {},
+  created() {
+    let len = Object.keys(this.$route.params).length;
+    if (!len) {
+      this.$router.back();
+    }
+  },
+  computed: {
+    ...mapState(["addressInfo"]),
+    defaultInfo() {
+      let index = this.$route.params.index;
+      return this.addressInfo[index];
+    }
+  },
+  methods: {
+    ...mapMutations(["EDIT_ADDRESS", "REMOVE_ADDRESS"]),
+    onClickRight() {
+      this.dialogShow = true;
+    },
+    onConfirm() {
+      this.REMOVE_ADDRESS(this.defaultInfo.id);
+      this.$toast("删除成功");
+      this.$router.back();
+    },
+    onSave(address) {
+      this.EDIT_ADDRESS(address);
+      this.$toast("修改成功");
+      this.$router.back();
+    }
+  }
 };
 </script>
 <style lang='scss' scoped>

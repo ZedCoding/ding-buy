@@ -8,6 +8,10 @@ export const CHANGE_SEX = "CHANGE_SEX";
 export const CHANGE_BIRTHDAY = "CHANGE_BIRTHDAY";
 // 增加地址
 export const ADD_ADDRESS = "ADD_ADDRESS";
+// 修改地址
+export const EDIT_ADDRESS = "EDIT_ADDRESS";
+// 删除地址
+export const REMOVE_ADDRESS = "REMOVE_ADDRESS";
 
 // 加入购物车
 export const ADD_GOODS = "ADD_GOODS";

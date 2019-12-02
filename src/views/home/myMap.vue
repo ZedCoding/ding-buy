@@ -104,7 +104,7 @@ export default {
               this.getLocationList(res);
             }
           });
-          this.$nextTick(() => {
+          setTimeout(() => {
             //去掉logo
             document.getElementsByClassName("amap-logo")[0].style.display =
               "none";
@@ -120,7 +120,7 @@ export default {
             document.getElementsByClassName(
               "amap-geolocation-con"
             )[0].style.left = "85%";
-          });
+          }, 50);
         }
       },
       // 标记
