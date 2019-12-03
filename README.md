@@ -6,6 +6,7 @@
 ### 预览
 <div style="width:100%;display:flex;flex-wrap:wrap;">
   <img src="./preview/home.png" width="33%" alt="">
+  <img src="./preview/category.png" width="33%" alt="">
   <img src="./preview/eat.png" width="33%" alt="">
   <img src="./preview/cart.png" width="33%" alt="">
   <img src="./preview/mine.png" width="33%" alt="">

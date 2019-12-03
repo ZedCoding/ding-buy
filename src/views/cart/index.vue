@@ -163,8 +163,9 @@ export default {
     ]),
     async getList() {
       let res = await this.$http("/api/cart/youlike");
-      if (res.data.code !== 0) return;
-      this.productList = res.data.data.product_list;
+      if (res.data.code === 0) {
+        this.productList = res.data.data.product_list;
+      }
     },
     addCart({ id, name, small_image, price }) {
       this.ADD_GOODS({ id, name, small_image, price });

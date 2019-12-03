@@ -12,7 +12,7 @@
           <div class="text">
             <span class="name">{{item.name}}</span>
             <div class="text-grey">
-              <span>单价:￥{{item.price}}</span>
+              <span>单价:￥{{item.price}} </span>
               <span>数量:{{item.number}}</span>
             </div>
           </div>

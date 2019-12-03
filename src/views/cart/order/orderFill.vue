@@ -196,6 +196,10 @@ export default {
       if (this.pointsChecked) {
         price -= 8;
       }
+      // 归零
+      if(price < 0) {
+        price = 0;
+      }
       return price * 100;
     }
   },

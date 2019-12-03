@@ -10,8 +10,8 @@
         :addressInfo="addressInfo"
       />
       <div class="category">
-        <template v-for="item in categoryList">
-          <div class="category-item" :key="item.name">
+        <template v-for="(item,index) in categoryList">
+          <div class="category-item" :key="item.name" @click="onItemClick(item.query,index)">
             <img :src="item.icon_url" class="item-icon" alt />
             <span class="item-text">{{item.name}}</span>
           </div>
@@ -214,10 +214,10 @@ export default {
     this.getHomeData();
   },
   computed: {
-    ...mapState(["userInfo","addressInfo"])
+    ...mapState(["userInfo", "addressInfo"])
   },
   methods: {
-    ...mapMutations(['ADD_GOODS']),
+    ...mapMutations(["ADD_GOODS"]),
     async getHomeData() {
       let res = await this.$http("/api/homeApi");
       this.showLoading = false;
@@ -226,11 +226,17 @@ export default {
       this.adImg = home_ad.image_url;
       this.swiperList = list[0].icon_list;
       this.tipImg = list[1].image_url;
-      this.categoryList = list[2].icon_list;
+      this.categoryList = list[2].icon_list.map((item,index) => {
+        item.query = index < 9 ? `lk00${index + 1}` : `lk0${index + 1}`;
+        return item;
+      });
       this.flashFoods = list[3].product_list;
       this.specialZone = special_zone;
       this.productList = list[12].product_list;
       this.flag = true;
+    },
+    onItemClick(query, index) {
+      this.$router.push({ name: "Category", params: { query, index } });
     },
     onVipClick() {
       if (!this.userInfo.token) {
@@ -239,6 +245,7 @@ export default {
         this.$router.push({ path: "/mine/myVip" });
       }
     },
+
     onClick() {
       this.shuffle(this.productList);
     },
@@ -261,7 +268,7 @@ export default {
     addCart({ id, name, small_image, price }) {
       this.ADD_GOODS({ id, name, small_image, price });
       this.$toast("成功加入购物车");
-    },
+    }
   },
   components: {
     Header,

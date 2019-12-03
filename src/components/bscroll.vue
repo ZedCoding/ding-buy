@@ -31,6 +31,13 @@ export default {
       default: false
     },
     /**
+     * 是否开启纵向滚动
+     */
+    scrollY: {
+      type: Boolean,
+      default: false
+    },
+    /**
      * 是否派发滚动事件
      */
     listenScroll: {
@@ -77,7 +84,7 @@ export default {
     // 保证在DOM渲染完毕后初始化better-scroll
     setTimeout(() => {
       this._initScroll();
-    }, 20);
+    }, 50);
   },
   methods: {
     _initScroll() {
@@ -86,9 +93,9 @@ export default {
       this.scroll = new BScroll(this.$refs.wrapper, {
         probeType: this.probeType,
         click: this.click,
-        scrollX: this.scrollX
+        scrollX: this.scrollX,
+        scrollY: this.scrollY
       });
-
       // 是否派发滚动事件
       if (this.listenScroll) {
         let me = this;

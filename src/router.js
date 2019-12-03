@@ -41,7 +41,7 @@ const router = new Router({
         {
           path: "category",
           name: "Category",
-          component: Category
+          component: Category,
         },
         {
           path: "eat",
@@ -60,6 +60,9 @@ const router = new Router({
           path: "mine",
           name: "Mine",
           component: Mine,
+          meta: {
+            keepAlive: true
+          }
         }
       ]
     },

@@ -77,7 +77,8 @@ export default {
       this.$router.push({ path: "/dashboard/home/map" });
     },
     onSearch() {
-      this.$toast("暂未实现");
+      this.$toast("搜索功能暂未实现");
+      this.value = "";
     },
     getVip() {
       console.log(this.userInfo);

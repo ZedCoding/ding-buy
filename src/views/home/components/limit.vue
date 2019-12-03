@@ -13,7 +13,7 @@
       </div>
       <span class="more">更多</span>
     </div>
-    <div class="wrapper" ref="wrapper">
+    <b-scroll :data="flashFoods" :scrollX="true" class="wrapper" ref="wrapper">
       <ul ref="content">
         <li v-for="item in flashFoods" :key="item.id" class="content-item" ref="item">
           <img :src="item.small_image" alt />
@@ -71,11 +71,11 @@
           </div>
         </li>
       </ul>
-    </div>
+    </b-scroll>
   </div>
 </template>
 <script>
-import BScroll from "better-scroll";
+import BScroll from "@/components/bscroll";
 import { mapMutations } from "vuex";
 export default {
   name: "limit",
@@ -95,25 +95,23 @@ export default {
     addCart({ id, name, small_image, price }) {
       this.ADD_GOODS({ id, name, small_image, price });
       this.$toast("成功加入购物车");
+    },
+    getWidth() {
+      let contentWidth = 0;
+      let el = this.$refs.item;
+      for (let i = 0; i < el.length; i++) {
+        contentWidth += el[i].clientWidth * 1.15;
+      }
+      this.$refs.content.style.width = contentWidth + "px";
     }
   },
   mounted() {
     this.$nextTick(() => {
-      if (!this.scroll) {
-        let contentWidth = 0;
-        let el = this.$refs.item;
-        for (let i = 0; i < el.length; i++) {
-          contentWidth += el[i].clientWidth * 1.15;
-        }
-        this.$refs.content.style.width = contentWidth + "px";
-        this.scroll = new BScroll(this.$refs.wrapper, {
-          probeType: 3,
-          startX: 0,
-          click: true,
-          scrollX: true
-        });
-      }
-    });
+      this.getWidth();
+    })
+  },
+  components: {
+    BScroll
   }
 };
 </script>
