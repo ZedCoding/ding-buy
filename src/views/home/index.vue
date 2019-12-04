@@ -93,6 +93,7 @@
         swipeable
         animated
         sticky
+        :offset-top="50"
       >
         <van-tab v-for="tab in tabs" :key="tab.title" :title="tab.title" :name="tab.name">
           <div class="product-list">
@@ -105,7 +106,7 @@
                   <span class="now-price">￥{{item.price}}</span>
                   <span class="origin-price">￥{{item.origin_price}}</span>
                 </div>
-                <div class="buy-cart" @click="addCart(item)">
+                <div class="buy-cart" @click="addCart(item, $event)">
                   <svg data-v-da2028b6 viewBox="0 0 52 52" class="icon icon-60">
                     <defs data-v-da2028b6>
                       <radialGradient
@@ -163,6 +164,13 @@
       </van-tabs>
       <scroll-top />
       <van-divider>我是有底线的</van-divider>
+      <drop-ball
+        :dropImg="dropImg"
+        :elLeft="elLeft"
+        :elTop="elTop"
+        :dots="dots"
+        @change="onDotChange"
+      />
     </template>
     <loading :show="showLoading" />
   </div>
@@ -207,7 +215,11 @@ export default {
           title: "心选"
         }
       ],
-      productList: []
+      productList: [],
+      dropImg: "",
+      elLeft: null,
+      elTop: null,
+      dots: [] // 小球集合
     };
   },
   created() {
@@ -226,7 +238,7 @@ export default {
       this.adImg = home_ad.image_url;
       this.swiperList = list[0].icon_list;
       this.tipImg = list[1].image_url;
-      this.categoryList = list[2].icon_list.map((item,index) => {
+      this.categoryList = list[2].icon_list.map((item, index) => {
         item.query = index < 9 ? `lk00${index + 1}` : `lk0${index + 1}`;
         return item;
       });
@@ -245,7 +257,6 @@ export default {
         this.$router.push({ path: "/mine/myVip" });
       }
     },
-
     onClick() {
       this.shuffle(this.productList);
     },
@@ -265,9 +276,15 @@ export default {
       }
       return array;
     },
-    addCart({ id, name, small_image, price }) {
+    addCart({ id, name, small_image, price }, event) {
       this.ADD_GOODS({ id, name, small_image, price });
-      this.$toast("成功加入购物车");
+      this.dropImg = small_image;
+      this.elLeft = event.target.getBoundingClientRect().left;
+      this.elTop = event.target.getBoundingClientRect().top;
+      this.dots = [...this.dots, true];
+    },
+    onDotChange(data) {
+      this.dots = [...this.dots, data];
     }
   },
   components: {

@@ -1,7 +1,7 @@
 <template>
   <div class="category">
     <van-search placeholder="搜索一下" v-model="value" @search="onSearch" />
-    <template v-show="!showLoading">
+    <template v-if="!showLoading">
       <b-scroll :data="categoriesList" :scrollY="true" ref="leftWrap" class="left-wrap">
         <div ref="leftContent">
           <div
@@ -60,7 +60,7 @@
                     <span class="now-price">￥{{item.price}}</span>
                     <span class="origin-price">￥{{item.origin_price}}</span>
                   </div>
-                  <div class="buy-cart" @click="addCart(item)">
+                  <div class="buy-cart" @click="addCart(item, $event)">
                     <svg data-v-da2028b6 viewBox="0 0 52 52" class="icon icon-60">
                       <defs data-v-da2028b6>
                         <radialGradient
@@ -114,9 +114,17 @@
                 </div>
               </div>
             </div>
+            <span class="bottom-text">到底了，看看别的分类吧</span>
           </div>
         </b-scroll>
       </div>
+      <drop-ball
+        :dropImg="dropImg"
+        :elLeft="elLeft"
+        :elTop="elTop"
+        :dots="dots"
+        @change="onDotChange"
+      />
     </template>
     <loading :show="showLoading" />
   </div>
@@ -134,7 +142,11 @@ export default {
       cateIndex: 0,
       detailsList: [],
       navIndex: 0,
-      showAll: false
+      showAll: false,
+      dropImg: "",
+      elLeft: null,
+      elTop: null,
+      dots: [] // 小球集合
     };
   },
   created() {
@@ -207,9 +219,15 @@ export default {
     onAllClick() {
       this.showAll = !this.showAll;
     },
-    addCart({ id, name, small_image, price }) {
+    addCart({ id, name, small_image, price }, event) {
       this.ADD_GOODS({ id, name, small_image, price });
-      this.$toast("成功加入购物车");
+      this.dropImg = small_image;
+      this.elLeft = event.target.getBoundingClientRect().left;
+      this.elTop = event.target.getBoundingClientRect().top;
+      this.dots = [...this.dots, true];
+    },
+    onDotChange(data) {
+      this.dots = [...this.dots, data];
     },
     getNavWidth() {
       let contentWidth = 0;
@@ -335,13 +353,12 @@ export default {
         }
       }
     }
-
     .list-wrap {
       position: absolute;
       top: 3rem;
       left: 0;
       right: 0;
-      height: 80vh;
+      height: 90%;
       overflow: hidden;
       .nav-title {
         display: inline-block;
@@ -405,6 +422,12 @@ export default {
             }
           }
         }
+      }
+      .bottom-text {
+        display: inline-block;
+        width: 100%;
+        line-height: 3rem;
+        text-align: center;
       }
     }
   }

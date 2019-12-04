@@ -18,6 +18,7 @@
           :icon="bar.icon"
           :to="`/dashboard${bar.route}`"
           :info="bar.name === '购物车' ? infoNumber:null"
+          :id="bar.name === '购物车'?'buycar':null"
           replace
         >{{bar.name}}</van-tabbar-item>
       </template>

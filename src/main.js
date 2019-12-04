@@ -43,7 +43,8 @@ import {
   ContactList,
   ContactEdit,
   Popup,
-  Switch 
+  Switch,
+  Sticky
 } from 'vant';
 
 Vue.use(Tabbar)
@@ -83,6 +84,7 @@ Vue.use(Tabbar)
   .use(ContactEdit)
   .use(Popup)
   .use(Switch)
+  .use(Sticky)
   .use(waterfall)
   .use(format)
   .use(rem)
@@ -93,8 +95,10 @@ Vue.prototype.$http = http;
 
 import loading from '@/components/loading';
 import scrollTop from '@/components/scrollTop';
+import dropBall from '@/components/dropBall';
 Vue.component('loading', loading);
 Vue.component('scrollTop', scrollTop);
+Vue.component('dropBall', dropBall);
 
 // 解决移动端点击延迟200ms的问题
 if ('addEventListener' in document) {

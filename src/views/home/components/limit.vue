@@ -23,7 +23,7 @@
               <p class="now-price">￥{{item.price}}</p>
               <p class="origin-price">￥{{item.origin_price}}</p>
             </div>
-            <div class="buy-cart" @click="addCart(item)">
+            <div class="buy-cart" @click="addCart(item,$event)">
               <svg data-v-da2028b6 viewBox="0 0 52 52" class="icon icon-60">
                 <defs data-v-da2028b6>
                   <radialGradient
@@ -72,6 +72,13 @@
         </li>
       </ul>
     </b-scroll>
+    <drop-ball
+      :dropImg="dropImg"
+      :elLeft="elLeft"
+      :elTop="elTop"
+      :dots="dots"
+      @change="onDotChange"
+    />
   </div>
 </template>
 <script>
@@ -87,14 +94,24 @@ export default {
   },
   data() {
     return {
-      time: 24 * 60 * 60 * 1000 * 7
+      time: 24 * 60 * 60 * 1000 * 7,
+      dropImg: "",
+      elLeft: null,
+      elTop: null,
+      dots: [] // 小球集合
     };
   },
   methods: {
     ...mapMutations(["ADD_GOODS"]),
-    addCart({ id, name, small_image, price }) {
+    addCart({ id, name, small_image, price }, event) {
       this.ADD_GOODS({ id, name, small_image, price });
-      this.$toast("成功加入购物车");
+      this.dropImg = small_image;
+      this.elLeft = event.target.getBoundingClientRect().left;
+      this.elTop = event.target.getBoundingClientRect().top;
+      this.dots = [...this.dots, true];
+    },
+    onDotChange(data) {
+      this.dots = [...this.dots, data];
     },
     getWidth() {
       let contentWidth = 0;
@@ -108,7 +125,7 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.getWidth();
-    })
+    });
   },
   components: {
     BScroll

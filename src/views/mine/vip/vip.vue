@@ -150,7 +150,9 @@
         <div class="fixed-right" @click="getPay">开通绿卡</div>
       </div>
     </template>
-    <loading :show="showLoading" />
+    <div class="loading-wrap">
+      <van-loading color="#3bba63" />
+    </div>
   </div>
 </template>
 <script>
@@ -173,7 +175,6 @@ export default {
   methods: {
     async getData() {
       let res = await this.$http("/api/vip");
-      this.showLoading = false;
       if (res.data.code === 0) {
         const {
           load_banner,
@@ -185,6 +186,7 @@ export default {
         this.todayTicket = today_ticket;
         this.weekTicket = week_ticket;
         this.cateList = cate_detail;
+        this.showLoading = false;
       }
     },
     getPay() {
@@ -195,7 +197,9 @@ export default {
         document.documentElement.scrollTop ||
         window.pageYOffset ||
         document.body.scrollTop;
-      let validTop = this.$refs.scrollFloor && this.$refs.scrollFloor.getBoundingClientRect().top;
+      let validTop =
+        this.$refs.scrollFloor &&
+        this.$refs.scrollFloor.getBoundingClientRect().top;
       this.showButton = scrollTop > validTop ? true : false;
     }
   },
@@ -419,6 +423,12 @@ export default {
       border-bottom-right-radius: 2rem;
       background-color: #3cb963;
     }
+  }
+  .loading-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
   }
 }
 </style>

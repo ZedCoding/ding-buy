@@ -8,13 +8,15 @@
           <van-icon name="arrow-down" color="#fff" size="0.8rem" />
         </div>
       </div>
-      <van-search
-        v-model="value"
-        placeholder="搜索一下"
-        shape="round"
-        @search="onSearch"
-        background="#3bba63"
-      />
+      <van-sticky>
+        <van-search
+          v-model="value"
+          placeholder="搜索一下"
+          shape="round"
+          @search="onSearch"
+          background="#3bba63"
+        />
+      </van-sticky>
     </div>
     <van-swipe :autoplay="3000" indicator-color="#75A342">
       <van-swipe-item v-for="item in swiperList" :key="item.cid">
@@ -64,7 +66,9 @@ export default {
       if (!this.addressInfo.length) {
         return "请选择位置";
       }
-      let defaultArr = this.addressInfo.filter(address => address.isDefault === true);
+      let defaultArr = this.addressInfo.filter(
+        address => address.isDefault === true
+      );
       if (defaultArr.length) {
         return defaultArr[0].county;
       } else {
@@ -81,7 +85,6 @@ export default {
       this.value = "";
     },
     getVip() {
-      console.log(this.userInfo);
       if (!this.userInfo.token) {
         this.$router.push({ path: "/login" });
       } else {
@@ -104,7 +107,7 @@ $bg: "~@/assets/img/home_bg.png";
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.6rem;
+      padding: 0.6rem 0.6rem 0 0.6rem;
       .address {
         display: flex;
         align-items: center;
@@ -123,9 +126,15 @@ $bg: "~@/assets/img/home_bg.png";
         }
       }
     }
-    .van-search {
-      padding: 0 8px 8px;
+    .van-sticky--fixed {
+      .van-search {
+        background-color: #fff!important;
+        .van-search__content {
+          background-color: #f2f2f2;
+        }
+      }
     }
+    
   }
   .van-swipe {
     width: 95%;
