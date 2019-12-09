@@ -168,7 +168,7 @@ export default {
         }
         count--;
       }, 1000);
-      this.$toast("验证码发送成功");
+      this.$toast("验证码已发送");
     },
     async onLogin() {
       const res = await this.$http.post("/api/login_code", {

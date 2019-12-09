@@ -50,7 +50,6 @@
       <van-cell title="意见反馈" icon="comment" is-link @click="onCommentClick" />
     </van-cell-group>
     <div class="version">当前版本1.0.0</div>
-    <van-dialog v-model="dialogShow" message="移动端vue + vant学习项目 哈哈哈哈~"></van-dialog>
   </div>
 </template>
 <script>
@@ -76,8 +75,7 @@ export default {
           text: "售后/退款",
           icon: "cash-back-record"
         }
-      ],
-      dialogShow: false
+      ]
     };
   },
   computed: {
@@ -125,7 +123,9 @@ export default {
       this.$toast("客服小姐姐还没上班~");
     },
     onCommentClick() {
-      this.dialogShow = true;
+      this.$dialog.alert({
+        message: "移动端vue + vant学习项目 哈哈哈哈~"
+      });
     }
   }
 };

@@ -16,7 +16,6 @@
       :address-info="defaultInfo"
       @save="onSave"
     />
-    <van-dialog v-model="dialogShow" message="确定要删除吗？" showCancelButton @confirm="onConfirm" />
   </div>
 </template>
 <script>
@@ -26,8 +25,7 @@ export default {
   name: "edit-address",
   data() {
     return {
-      areaList,
-      dialogShow: false
+      areaList
     };
   },
   created() {
@@ -46,12 +44,16 @@ export default {
   methods: {
     ...mapMutations(["EDIT_ADDRESS", "REMOVE_ADDRESS"]),
     onClickRight() {
-      this.dialogShow = true;
-    },
-    onConfirm() {
-      this.REMOVE_ADDRESS(this.defaultInfo.id);
-      this.$toast("删除成功");
-      this.$router.back();
+      this.$dialog
+        .confirm({
+          message: "确定要删除该地址吗？"
+        })
+        .then(() => {
+          this.REMOVE_ADDRESS(this.defaultInfo.id);
+          this.$toast("删除成功");
+          this.$router.back();
+        })
+        .catch(() => {});
     },
     onSave(address) {
       this.EDIT_ADDRESS(address);

@@ -82,7 +82,7 @@
         <span class="sub-title">5折开卡></span>
       </div>
       <Limit :flashFoods="flashFoods" v-if="flag" />
-      <Special :specialZone="specialZone" v-if="flag" />
+      <!-- <Special :specialZone="specialZone" v-if="flag" /> -->
       <van-tabs
         v-model="activeName"
         color="#3bba63"
@@ -277,6 +277,10 @@ export default {
       return array;
     },
     addCart({ id, name, small_image, price }, event) {
+      if (!Object.keys(this.userInfo).length) {
+        this.$router.push({ path: "/login" });
+        return;
+      }
       this.ADD_GOODS({ id, name, small_image, price });
       this.dropImg = small_image;
       this.elLeft = event.target.getBoundingClientRect().left;

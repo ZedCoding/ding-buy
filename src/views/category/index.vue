@@ -131,7 +131,7 @@
 </template>
 <script>
 import BScroll from "@/components/bscroll";
-import { mapMutations } from "vuex";
+import { mapMutations, mapState } from "vuex";
 export default {
   name: "category",
   data() {
@@ -153,6 +153,7 @@ export default {
     this.initData();
   },
   computed: {
+    ...mapState(['userInfo']),
     arrowName() {
       return this.showAll ? "arrow-up" : "arrow-down";
     },
@@ -220,6 +221,10 @@ export default {
       this.showAll = !this.showAll;
     },
     addCart({ id, name, small_image, price }, event) {
+      if (!Object.keys(this.userInfo).length) {
+        this.$router.push({ path: "/login" });
+        return;
+      }
       this.ADD_GOODS({ id, name, small_image, price });
       this.dropImg = small_image;
       this.elLeft = event.target.getBoundingClientRect().left;

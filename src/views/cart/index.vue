@@ -14,7 +14,7 @@
         <van-button type="primary" to="home" round style="width:50%;">去逛逛</van-button>
       </div>
       <div class="cart-list" v-else>
-        <div v-for="item in shopCartInfo" :key="item.id" class="cart-item">
+        <van-swipe-cell v-for="item in shopCartInfo" :key="item.id">
           <div class="left">
             <van-checkbox v-model="item.checked" checked-color="#45C763" icon-size="16" />
           </div>
@@ -34,7 +34,10 @@
               />
             </div>
           </div>
-        </div>
+          <template slot="right">
+            <van-button square type="danger" text="删除" @click="onRemove(item.id)" />
+          </template>
+        </van-swipe-cell>
       </div>
       <van-divider :style="{color: '#999', borderColor: '#999',padding:'0 16px'}">猜你喜欢</van-divider>
       <div class="product-list">
@@ -104,9 +107,14 @@
       >
         <van-checkbox v-model="checkedAll" checked-color="#45C763" icon-size="16">全选</van-checkbox>
       </van-submit-bar>
-      <van-dialog v-model="dialogShow" message="确定删除勾选商品吗？" showCancelButton @confirm="onConfirm"></van-dialog>
       <scroll-top />
-      <drop-ball :dropImg="dropImg" :elLeft="elLeft" :elTop="elTop" :dots="dots" @change="onDotChange" />
+      <drop-ball
+        :dropImg="dropImg"
+        :elLeft="elLeft"
+        :elTop="elTop"
+        :dots="dots"
+        @change="onDotChange"
+      />
     </template>
     <loading :show="showLoading" />
   </div>
@@ -119,7 +127,6 @@ export default {
     return {
       showLoading: true,
       productList: [],
-      dialogShow: false,
       dropImg: "",
       elLeft: null,
       elTop: null,
@@ -130,7 +137,7 @@ export default {
     this.getList();
   },
   computed: {
-    ...mapState(["shopCartInfo"]),
+    ...mapState(["userInfo", "shopCartInfo"]),
     totalCount() {
       return Object.keys(this.shopCartInfo).length;
     },
@@ -178,6 +185,10 @@ export default {
       }
     },
     addCart({ id, name, small_image, price }) {
+      if (!Object.keys(this.userInfo).length) {
+        this.$router.push({ path: "/login" });
+        return;
+      }
       this.ADD_GOODS({ id, name, small_image, price });
       this.dropImg = small_image;
       this.elLeft = event.target.getBoundingClientRect().left;
@@ -189,13 +200,32 @@ export default {
     },
     onClickRight() {
       if (this.rightTextDisabled) return;
-      this.dialogShow = true;
+      this.$dialog
+        .confirm({
+          message: "确定删除勾选商品吗？"
+        })
+        .then(() => {
+          this.CLEAR_CART();
+        })
+        .catch(() => {});
     },
     onConfirm() {
       this.CLEAR_CART();
     },
     onStepChange(id, value) {
-      value === 0 && this.REMOVE_GOODS(id);
+      if (value === 0) {
+        this.$dialog
+          .confirm({
+            message: "确定删除该商品吗？"
+          })
+          .then(() => {
+            this.REMOVE_GOODS(id);
+          })
+          .catch(() => {});
+      }
+    },
+    onRemove(id) {
+      this.REMOVE_GOODS(id);
     },
     onSubmit() {
       this.$router.push({ path: "/orderfill" });
@@ -230,7 +260,7 @@ export default {
     }
   }
   .cart-list {
-    .cart-item {
+    /deep/ .van-swipe-cell__wrapper {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -260,6 +290,9 @@ export default {
           align-items: center;
           padding-right: 0.8rem;
         }
+      }
+      .van-swipe-cell__right {
+        top: 25%;
       }
     }
   }

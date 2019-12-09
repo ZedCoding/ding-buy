@@ -83,7 +83,7 @@
 </template>
 <script>
 import BScroll from "@/components/bscroll";
-import { mapMutations } from "vuex";
+import { mapMutations, mapState } from "vuex";
 export default {
   name: "limit",
   props: {
@@ -101,9 +101,16 @@ export default {
       dots: [] // 小球集合
     };
   },
+  computed: {
+    ...mapState(['userInfo'])
+  },
   methods: {
     ...mapMutations(["ADD_GOODS"]),
     addCart({ id, name, small_image, price }, event) {
+      if (!Object.keys(this.userInfo).length) {
+        this.$router.push({ path: "/login" });
+        return;
+      }
       this.ADD_GOODS({ id, name, small_image, price });
       this.dropImg = small_image;
       this.elLeft = event.target.getBoundingClientRect().left;

@@ -4,9 +4,10 @@ import router from './router';
 import store from './store'
 import "reset-css";
 import waterfall from "vue-waterfall2";
-import { rem, format, $toast } from './plugins';
+import { rem, format } from './plugins';
 import FastClick from 'fastclick';
 import {
+  Toast,
   Tabbar,
   TabbarItem,
   Icon,
@@ -44,10 +45,12 @@ import {
   ContactEdit,
   Popup,
   Switch,
-  Sticky
+  Sticky,
+  SwipeCell
 } from 'vant';
 
-Vue.use(Tabbar)
+Vue.use(Toast)
+  .use(Tabbar)
   .use(TabbarItem)
   .use(Icon)
   .use(Button)
@@ -85,10 +88,13 @@ Vue.use(Tabbar)
   .use(Popup)
   .use(Switch)
   .use(Sticky)
+  .use(SwipeCell)
   .use(waterfall)
   .use(format)
   .use(rem)
-  .use($toast)
+
+// 全局设置toast属性duration
+Toast.setDefaultOptions({ duration: 1500 });
 
 import http from './http'
 Vue.prototype.$http = http;

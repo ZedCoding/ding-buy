@@ -16,7 +16,7 @@
       <van-cell title="生日" :value="userInfo.birth_day||'未填写'" is-link @click="onDateClick" />
       <van-cell title="手机号" :value="phoneNumber" is-link />
     </van-cell-group>
-    <div class="button-wrap" @click="onQuit">
+    <div class="button-wrap" @click="onLogOut">
       <van-button type="primary" round>退出登录</van-button>
     </div>
     <van-action-sheet v-model="show" :actions="actions" @select="onSelect" />
@@ -30,7 +30,6 @@
         @cancel="handleCancel"
       />
     </van-action-sheet>
-    <van-dialog v-model="dialogShow" message="确定退出登录吗？" showCancelButton @confirm="dialogConfirm" />
   </div>
 </template>
 <script>
@@ -50,7 +49,6 @@ export default {
       ],
       dateShow: false,
       minDate: new Date("1989,01,01"),
-      dialogShow: false
     };
   },
   computed: {
@@ -91,14 +89,17 @@ export default {
     handleCancel() {
       this.dateShow = false;
     },
-    onQuit() {
-      this.dialogShow = true;
-    },
-    dialogConfirm() {
-      this.dialogShow = false;
-      this.LOG_OUT();
-      this.$toast("退出成功");
-      this.$router.back();
+    onLogOut() {
+      this.$dialog
+        .confirm({
+          message: "确定退出登录吗？"
+        })
+        .then(() => {
+          this.LOG_OUT();
+          this.$toast("退出成功");
+          this.$router.back();
+        })
+        .catch(() => {});
     }
   }
 };
